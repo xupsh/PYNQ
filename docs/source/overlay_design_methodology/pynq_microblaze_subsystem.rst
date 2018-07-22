@@ -95,6 +95,7 @@ The corresponding Python constants are defined here:
 
    <PYNQ repository>/pynq/lib/pmod/constants.py
    <PYNQ repository>/pynq/lib/arduino/constants.py
+   <PYNQ repository>/pynq/lib/rpi/constants.py
 
 The following example explains how Python could initiate a read from a 
 peripheral connected to a PYNQ MicroBlaze. 
@@ -442,7 +443,8 @@ switch.
 
 For Pmod, there are 8 data pins that can be connected to GPIO, SPI, IIC, 
 or Timer. For Arduino, there are 20 shared data pins that can be connected to 
-GPIO, UART, SPI, or Timer. 
+GPIO, UART, SPI, or Timer. For RPi, there are 28 shared data pins that can be
+connected to GPIO, UART, SPI, or Timer.
 
 The following function, part of the provided IO switch driver (`xio_switch.h`),
 can be used to configure the switch from a PYNQ MicroBlaze 
@@ -638,7 +640,7 @@ Note:
 - SCL1, SDA1 can either be used on to-row (pins D10 - D11) or 
   bottom-row (D14-D15) but not both.
 
-Switch mappings used for Raspberrypi:
+Switch mappings used for Raspberry Pi:
 
 =======  ======  ========  ======  ============  ========  ====  =============
                                                                                                
@@ -649,14 +651,14 @@ GPIO0     GPIO                                             SDA0
 GPIO1     GPIO                                             SCL0
 GPIO2     GPIO                                             SDA1
 GPIO3     GPIO                                             SCL1
-GPIO4     GPIO                                                    TIMER_ICx
-GPIO5     GPIO                                                    TIMER_ICx
-GPIO6     GPIO                                                    TIMER_ICx
-GPIO7     GPIO                                    SS0             TIMER_ICx
-GPIO8     GPIO                                    SS0             TIMER_ICx
-GPIO9     GPIO                                    MISO0           TIMER_ICx
-GPIO10    GPIO                                    MOSI0           TIMER_ICx
-GPIO11    GPIO                                    SPICLK0         TIMER_ICx
+GPIO4     GPIO                                                    
+GPIO5     GPIO                                                    
+GPIO6     GPIO                                                    
+GPIO7     GPIO                                    SS0             
+GPIO8     GPIO                                    SS0             
+GPIO9     GPIO                                    MISO0           
+GPIO10    GPIO                                    MOSI0           
+GPIO11    GPIO                                    SPICLK0         
 GPIO12    GPIO              PWM0
 GPIO13    GPIO              PWM1
 GPIO14    GPIO   UART0_TX
@@ -675,10 +677,8 @@ GPIO25    GPIO
 
 Note:
 
-- `x` can be 0, 1, or 2 for TIMER_ICx.
-- GCLK0, 1, and 2 are used which do not go through the switch, 
-  providing 50% duty cycle square wave generation.
-- SPI0 can have up to two SS's.
+- SPI0 can have up to two Slave Selects (SS's). SS0 can be used to program the
+  functionality for the IO switch.
 
 
 PYNQ MicroBlaze Example
@@ -887,7 +887,7 @@ extracted as an attribute of the overlay, the following code also works:
 
 In the initialization method, an instance of the ``Pmod`` class is
 created. This ``Pmod`` class controls the basic functionalities of the 
-MicroBlaze processor, including reading commands/data, and writting 
+MicroBlaze processor, including reading commands/data, and writing 
 commands/data.
 
 Internally, when the ``Pmod`` class is initialized, the ``run()`` call pulls 
